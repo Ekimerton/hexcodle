@@ -10,14 +10,9 @@ body {
   flex-direction: column;
 }
 
-#userinput{
-  width: 27%;
-}
-
-#inputAndButton{
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
+#title{
+  color: rgb(4, 4, 19);
+  font-family: 'Roboto Mono', monospace;
 }
 
 #instructions{
@@ -25,13 +20,23 @@ body {
   font-size: small;
 }
 
-#title{
-  color: rgb(4, 4, 19);
-  font-family: 'Roboto Mono', monospace;
-}
-
 #colourGen{
   background-color: black;  
   padding: 5%;
   margin-bottom: 2%;
+}
+
+#userinput{
+  width: 30%;
+}
+
+#inputAndButton{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+
+#guessesDisplay{
+  flex-direction: column;
 }
