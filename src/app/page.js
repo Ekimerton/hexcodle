@@ -9,8 +9,7 @@ export default function Home() {
   const [guessText, setGuessText] = useState("");
   const [guesses, setGuesses] = useState([]);
   const [counter, setCounter] = useState(4);
-  const [isTooHigh, setIsTooHigh] = useState(false);
-  const [isTooLow, setIsTooLow] = useState(false);
+  const [gameOver, setGameOver] = useState(false);
 
   useEffect(() => {
     const r = Math.floor(Math.random() * 256);
@@ -23,7 +22,9 @@ export default function Home() {
     };
 
     setRandColor(
-      `#${componentToHex(r)}${componentToHex(g)}${componentToHex(b)}`
+      `#${componentToHex(r)}${componentToHex(g)}${componentToHex(
+        b
+      )}`.toUpperCase()
     );
   }, []);
 
@@ -34,14 +35,22 @@ export default function Home() {
     } else if (text.length >= 8) {
       return;
     } else {
-      setUserInput(text);
+      setUserInput(text.toUpperCase());
     }
   };
 
   const enterClick = () => {
+    const hexCodePattern = /^[0-9A-Fa-f]+$/;
+    {
+      /* Mapping each hex value onto an integer to make it easy to compare when doing greater/less values */
+    }
 
-    setIsTooHigh(userInput > randColor);
-    setIsTooLow(userInput < randColor);
+    {
+      /*setIsTooHigh(userInput > randColor);
+  setIsTooLow(userInput < randColor);*/
+    }
+
+    setGuessText("Guesses: ");
 
     setUserInput("#");
     {
@@ -54,36 +63,60 @@ export default function Home() {
     if (userInput.length != 7) {
       setStatusText("ERROR: HEX CODE MUST BE EXACTLY 6 DIGITS.");
       return;
+    } else if (!hexCodePattern.test(userInput.substring(1))) {
+      setStatusText("INVALID CHARACTER. PLEASE ONLY USE 0-9, A-F");
     } else if (userInput in guesses) {
       setStatusText("ALREADY GUESSED, please try a different hex code.");
     } else {
       setCounter(counter - 1);
       if (counter > 0 && userInput === randColor) {
         setStatusText("You guessed it!");
+        const newGuesses = [...guesses];
+        newGuesses.unshift(userInput);
+        setGuesses(newGuesses);
+        setGameOver(true);
         return;
       } else if (counter > 0 && userInput !== randColor) {
-        setGuessText("Guesses: ");
         setStatusText(`Not quite! ${counter} guesses left.`);
         const newGuesses = [...guesses];
         newGuesses.unshift(userInput);
         setGuesses(newGuesses);
       } else if (counter <= 0 && userInput !== randColor) {
-        setGuessText("Guesses: ");
         setStatusText(`Out of guesses. Today's Hexcodle was ${randColor}.`);
+        setGameOver(true);
         return;
       }
     }
   };
 
+  const renderArrows = (guess) => {
+    const hexMapping = {
+      0: 0,
+      1: 1,
+      2: 2,
+      3: 3,
+      4: 4,
+      5: 5,
+      6: 6,
+      7: 7,
+      8: 8,
+      9: 9,
+      A: 10,
+      B: 11,
+      C: 12,
+      D: 13,
+      E: 14,
+      F: 15,
+    };
 
-  const renderArrows = () => {
-    if (userInput.length !== 7) {
+    if (guess.length !== 7) {
       return null;
     }
     const arrows = [];
     for (let i = 1; i < 7; i++) {
-      const currentDigit = parseInt(userInput[i], 16);
-      const targetDigit = parseInt(randColor[i], 16);
+      const currentDigit = hexMapping[guess[i]];
+      const targetDigit = hexMapping[randColor[i]];
+
       if (currentDigit > targetDigit) {
         arrows.push("⬇️");
       } else if (currentDigit < targetDigit) {
@@ -94,7 +127,6 @@ export default function Home() {
     }
     return arrows.map((arrow, index) => <span key={index}>{arrow}</span>);
   };
-
 
   return (
     <div id="everything">
@@ -131,6 +163,7 @@ export default function Home() {
           onClick={() => {
             enterClick();
           }}
+          disabled={gameOver}
         >
           Enter
         </button>
@@ -138,18 +171,17 @@ export default function Home() {
 
       {/*Displays the status text (correct, incorrect, error, etc...*/}
       <p>{statusText}</p>
-      <div id="colourGen" style={{ backgroundColor: randColor }}>
-        {renderArrows()}
-      </div>
-      <p>{randColor}</p>
-      <p id="guessDisplay">
+      <div id="guessDisplay">
         {guessText}
         <ul>
           {guesses.map((guess, index) => (
-            <li key={index}>{guess}</li>
+            <>
+              <li key={index}>{guess}</li>
+              {renderArrows(guess)}
+            </>
           ))}
         </ul>
-      </p>
+      </div>
     </div>
   );
 }
