@@ -9,6 +9,8 @@ export default function Home() {
   const [guessText, setGuessText] = useState("");
   const [guesses, setGuesses] = useState([]);
   const [counter, setCounter] = useState(4);
+  const [isTooHigh, setIsTooHigh] = useState(false);
+  const [isTooLow, setIsTooLow] = useState(false);
 
   useEffect(() => {
     const r = Math.floor(Math.random() * 256);
@@ -37,6 +39,10 @@ export default function Home() {
   };
 
   const enterClick = () => {
+
+    setIsTooHigh(userInput > randColor);
+    setIsTooLow(userInput < randColor);
+
     setUserInput("#");
     {
       /* Checking validity of user's guess:
@@ -44,6 +50,7 @@ export default function Home() {
       - does it only contain valid hex characters
       - has it not been previously guessed */
     }
+
     if (userInput.length != 7) {
       setStatusText("ERROR: HEX CODE MUST BE EXACTLY 6 DIGITS.");
       return;
@@ -59,9 +66,6 @@ export default function Home() {
         setStatusText(`Not quite! ${counter} guesses left.`);
         const newGuesses = [...guesses];
         newGuesses.unshift(userInput);
-        {
-          /*add line break here for each guess on newline*/
-        }
         setGuesses(newGuesses);
       } else if (counter <= 0 && userInput !== randColor) {
         setGuessText("Guesses: ");
@@ -70,6 +74,27 @@ export default function Home() {
       }
     }
   };
+
+
+  const renderArrows = () => {
+    if (userInput.length !== 7) {
+      return null;
+    }
+    const arrows = [];
+    for (let i = 1; i < 7; i++) {
+      const currentDigit = parseInt(userInput[i], 16);
+      const targetDigit = parseInt(randColor[i], 16);
+      if (currentDigit > targetDigit) {
+        arrows.push("⬇️");
+      } else if (currentDigit < targetDigit) {
+        arrows.push("⬆️");
+      } else {
+        arrows.push("✅");
+      }
+    }
+    return arrows.map((arrow, index) => <span key={index}>{arrow}</span>);
+  };
+
 
   return (
     <div id="everything">
@@ -113,9 +138,17 @@ export default function Home() {
 
       {/*Displays the status text (correct, incorrect, error, etc...*/}
       <p>{statusText}</p>
+      <div id="colourGen" style={{ backgroundColor: randColor }}>
+        {renderArrows()}
+      </div>
+      <p>{randColor}</p>
       <p id="guessDisplay">
         {guessText}
-        {guesses}
+        <ul>
+          {guesses.map((guess, index) => (
+            <li key={index}>{guess}</li>
+          ))}
+        </ul>
       </p>
     </div>
   );
