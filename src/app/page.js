@@ -41,24 +41,10 @@ export default function Home() {
 
   const enterClick = () => {
     const hexCodePattern = /^[0-9A-Fa-f]+$/;
-    {
-      /* Mapping each hex value onto an integer to make it easy to compare when doing greater/less values */
-    }
-
-    {
-      /*setIsTooHigh(userInput > randColor);
-  setIsTooLow(userInput < randColor);*/
-    }
 
     setGuessText("Guesses: ");
 
     setUserInput("#");
-    {
-      /* Checking validity of user's guess:
-      - is it length 6 exactly (not including #)
-      - does it only contain valid hex characters
-      - has it not been previously guessed */
-    }
 
     if (userInput.length != 7) {
       setStatusText("ERROR: HEX CODE MUST BE EXACTLY 6 DIGITS.");
@@ -82,7 +68,7 @@ export default function Home() {
         newGuesses.unshift(userInput);
         setGuesses(newGuesses);
       } else if (counter <= 0 && userInput !== randColor) {
-        setStatusText(`Out of guesses. Today's Hexcodle was ${randColor}.`);
+        setStatusText(`Out of guesses. Todays Hexcodle was ${randColor}.`);
         setGameOver(true);
         return;
       }
@@ -132,23 +118,19 @@ export default function Home() {
     <div id="everything">
       <h1 id="title">Hexcodle</h1>
 
-      {/*Instructions for how game works and hyperlink to colour code picker site*/}
       <p id="instructions">
         You will have 5 tries to correctly guess the hex code of the colour
         displayed on screen.<br></br>
-        Don't know hex codes byb memory? No worries! Try the{" "}
+        Dont know hex codes byb memory? No worries! Try the{" "}
         <a href="https://htmlcolorcodes.com/color-picker/">
           html colour picker
         </a>{" "}
         site!
       </p>
 
-      {/*This is where the hex code colour will be generated*/}
       <div id="colourGen" style={{ backgroundColor: randColor }}></div>
       <p>{randColor}</p>
 
-      {/*Input text field and 'enter' button for submitting an answer 
-      NEED TO IMPLEMENT PRESSING ENTER TO SUBMIT AS WELL*/}
       <div id="inputAndButton">
         <input
           type="text"
@@ -157,7 +139,6 @@ export default function Home() {
           onChange={handleChange}
         />
 
-        {/*Enter button that will submit player's guess when pressed*/}
         <button
           id="enterButton"
           onClick={() => {
@@ -169,7 +150,6 @@ export default function Home() {
         </button>
       </div>
 
-      {/*Displays the status text (correct, incorrect, error, etc...*/}
       <p>{statusText}</p>
       <div id="guessDisplay">
         {guessText}
