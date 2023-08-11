@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Modal, Button, Divider} from "antd";
+import { Modal, Button, Divider } from "antd";
 
 export default function Home() {
   const [userInput, setUserInput] = useState("#");
@@ -142,7 +142,7 @@ export default function Home() {
         <p>
           You will have 5 tries to correctly guess the hex code of the colour
           displayed on screen.<br></br>
-          After each guess, you'll see if your guess was too low, too high, or
+          After each guess, you will see if your guess was too low, too high, or
           spot on! <br></br>
           Use these as guides to decipher how close your guess is.
         </p>
