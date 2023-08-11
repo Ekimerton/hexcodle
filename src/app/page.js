@@ -172,7 +172,7 @@ export default function Home() {
           </p>
           <p>
             Some common hex codes are as follows:
-            <ul>
+            <ul id="hexList">
               <li>#FFFFFF: White (full intensity for all RGB components)</li>
               <li>#000000: Black (no intensity for all RGB components)</li>
               <li>
