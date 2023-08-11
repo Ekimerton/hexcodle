@@ -1,42 +1,82 @@
 body {
   background-color: bisque;
+  background-image: "Animated-Shape.svg";
   font-family: Arial, Helvetica, sans-serif;
+  margin: 7%;
+  margin-top: 4%;
 }
 
-#everything{
+p {
+  font-size: 1rem;
+}
+
+ul {
+  list-style-type: none;
+  text-align: center;
+  padding: 0;
+  display: inline-block;
+  margin: 0 10px;
+}
+
+#everything {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
 }
 
-#title{
+#title {
   color: rgb(4, 4, 19);
   font-family: 'Roboto Mono', monospace;
 }
 
-#instructions{
+#instructions {
   text-align: center;
   font-size: small;
+  border: 1rem;
 }
 
-#colourGen{
-  background-color: black;  
-  padding: 5%;
+#infoModal {
+  margin-bottom: 7%;
+}
+
+.square {
+  height: 200px;
+  width: 200px;
+  background-color: #555;
+  margin-bottom: 3%;
+}
+
+#colourGen {
+  background-color: black;
+  padding: 10%;
   margin-bottom: 2%;
 }
 
-#userinput{
+#userinput {
   width: 30%;
 }
 
-#inputAndButton{
+#inputAndButton {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: row;
 }
 
-#guessesDisplay{
+#guessesDisplay {
   flex-direction: column;
+}
+
+#guessHeading {
+  color: rgb(4, 4, 19);
+  font-family: 'Roboto Mono', monospace;
+  size: 1.2rem;
+  font-weight: bold;
+}
+
+#guessContainer{
+  background-color: rgb(231, 206, 176);
+  text-align: center;
+  border: 10%;
 }

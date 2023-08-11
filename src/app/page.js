@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { Modal, Button, Divider} from "antd";
 
 export default function Home() {
   const [userInput, setUserInput] = useState("#");
@@ -10,6 +11,19 @@ export default function Home() {
   const [guesses, setGuesses] = useState([]);
   const [counter, setCounter] = useState(4);
   const [gameOver, setGameOver] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
 
   useEffect(() => {
     const r = Math.floor(Math.random() * 256);
@@ -42,8 +56,6 @@ export default function Home() {
   const enterClick = () => {
     const hexCodePattern = /^[0-9A-Fa-f]+$/;
 
-    setGuessText("Guesses: ");
-
     setUserInput("#");
 
     if (userInput.length != 7) {
@@ -62,12 +74,20 @@ export default function Home() {
         setGuesses(newGuesses);
         setGameOver(true);
         return;
+      } else if (counter == 1 && userInput !== randColor) {
+        setStatusText(`Not quite! ${counter} guess left.`);
+        const newGuesses = [...guesses];
+        newGuesses.unshift(userInput);
+        setGuesses(newGuesses);
       } else if (counter > 0 && userInput !== randColor) {
         setStatusText(`Not quite! ${counter} guesses left.`);
         const newGuesses = [...guesses];
         newGuesses.unshift(userInput);
         setGuesses(newGuesses);
       } else if (counter <= 0 && userInput !== randColor) {
+        const newGuesses = [...guesses];
+        newGuesses.unshift(userInput);
+        setGuesses(newGuesses);
         setStatusText(`Out of guesses. Todays Hexcodle was ${randColor}.`);
         setGameOver(true);
         return;
@@ -118,18 +138,61 @@ export default function Home() {
     <div id="everything">
       <h1 id="title">Hexcodle</h1>
 
-      <p id="instructions">
-        You will have 5 tries to correctly guess the hex code of the colour
-        displayed on screen.<br></br>
-        Dont know hex codes byb memory? No worries! Try the{" "}
-        <a href="https://htmlcolorcodes.com/color-picker/">
-          html colour picker
-        </a>{" "}
-        site!
-      </p>
+      <div id="instructions">
+        <p>
+          You will have 5 tries to correctly guess the hex code of the colour
+          displayed on screen.<br></br>
+          After each guess, you'll see if your guess was too low, too high, or
+          spot on! <br></br>
+          Use these as guides to decipher how close your guess is.
+        </p>
+      </div>
 
-      <div id="colourGen" style={{ backgroundColor: randColor }}></div>
-      <p>{randColor}</p>
+      <div id="infoModal">
+        <Button type="primary" size="small" onClick={showModal}>
+          WTF IS HEX?
+        </Button>
+        <Modal
+          title="How the HEX do hex codes work?"
+          visible={isModalVisible}
+          onOk={handleOk}
+          onCancel={handleCancel}
+        >
+          <p>
+            First, we will break down each of the 6 hex digits. A hexcode can be
+            represented as RRGGBB where R represents red, G represents green and
+            B represents blue. The digits/letters in these locations denote the
+            intensity of that colour; 0 being the lowest, and F being the
+            highest.
+          </p>
+          <p>
+            We use 0-9 are the first 10 values and A-F can be represented as
+            digits 11-16, where 0 is the lowest intensity, and 16/F is the
+            hightest intensity.
+          </p>
+          <p>
+            Some common hex codes are as follows:
+            <ul>
+              <li>#FFFFFF: White (full intensity for all RGB components)</li>
+              <li>#000000: Black (no intensity for all RGB components)</li>
+              <li>
+                #FF0000: Red (full intensity for red, no intensity for green and
+                blue)
+              </li>
+              <li>
+                #00FF00: Green (full intensity for green, no intensity for red
+                and blue)
+              </li>
+              <li>
+                #0000FF: Blue (full intensity for blue, no intensity for red and
+                green)
+              </li>
+            </ul>
+          </p>
+        </Modal>
+      </div>
+
+      <div class="square" style={{ backgroundColor: randColor }}></div>
 
       <div id="inputAndButton">
         <input
@@ -139,27 +202,33 @@ export default function Home() {
           onChange={handleChange}
         />
 
-        <button
+        <Button
+          type="primary"
+          size="small"
           id="enterButton"
           onClick={() => {
             enterClick();
           }}
+          on
           disabled={gameOver}
         >
-          Enter
-        </button>
+          ENTER
+        </Button>
       </div>
 
       <p>{statusText}</p>
+      <h id="guessHeading">Guesses</h>
       <div id="guessDisplay">
         {guessText}
         <ul>
-          {guesses.map((guess, index) => (
-            <>
-              <li key={index}>{guess}</li>
-              {renderArrows(guess)}
-            </>
-          ))}
+          <div id="guessContainer">
+            {guesses.map((guess, index) => (
+              <>
+                <li key={index}>{guess} </li>
+                {renderArrows(guess)}
+              </>
+            ))}
+          </div>
         </ul>
       </div>
     </div>
