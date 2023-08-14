@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Modal, Button, Divider } from "antd";
+import { decimalToHex, hexToDecimal, generateUniqueNumber } from "./utils.js";
 
 export default function Home() {
   const [userInput, setUserInput] = useState("#");
@@ -67,7 +68,7 @@ export default function Home() {
       setStatusText("ALREADY GUESSED, please try a different hex code.");
     } else {
       setCounter(counter - 1);
-      if (counter > 0 && userInput === randColor) {
+      if (counter >= 0 && userInput === randColor) {
         setStatusText("You guessed it!");
         const newGuesses = [...guesses];
         newGuesses.unshift(userInput);
@@ -145,6 +146,7 @@ export default function Home() {
           After each guess, you will see if your guess was too low, too high, or
           spot on! <br></br>
           Use these as guides to decipher how close your guess is.
+          {randColor}
         </p>
       </div>
 
@@ -220,7 +222,7 @@ export default function Home() {
       <h id="guessHeading">Guesses</h>
       <div id="guessDisplay">
         {guessText}
-        <ul>
+        <ul id="guesses">
           <div id="guessContainer">
             {guesses.map((guess, index) => (
               <>

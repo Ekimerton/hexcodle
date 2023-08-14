@@ -10,12 +10,20 @@ p {
   font-size: 1rem;
 }
 
-#hexList {
+#guesses{
   list-style-type: none;
   text-align: center;
   padding: 0;
   display: inline-block;
   margin: 0 10px;
+}
+
+#guess{
+  list-style-type: none;
+}
+
+#hexList {
+  list-style-type: circle;
 }
 
 #everything {
