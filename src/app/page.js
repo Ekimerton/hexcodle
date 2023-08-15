@@ -90,7 +90,9 @@ export default function Home() {
         setStatusText(`Out of guesses. Todays Hexcodle was ${randColor}.`);
         setGameOver(true);
       } else {
-        setStatusText(`Not quite! ${counter} guess${counter == 1 ? "" : "es"} left.`);
+        setStatusText(
+          `Not quite! ${counter} guess${counter == 1 ? "" : "es"} left.`
+        );
       }
     }
 
@@ -188,7 +190,12 @@ export default function Home() {
         <h id="guessHeading">Guesses</h>
 
         {guesses.map((guess, index) => (
-          <Guess key={index} guess={guess} target={randColor} />
+          <Guess
+            key={index}
+            guess={guess}
+            target={randColor}
+            hashtag={index === 0}
+          />
         ))}
       </div>
     </div>
