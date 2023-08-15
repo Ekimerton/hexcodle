@@ -1,5 +1,7 @@
 // For Hansies :^)
 import { useState } from "react";
+import moment from "moment-timezone";
+import seedrandom from "seedrandom";
 
 /*
     Function to generate a random number based on the current date
@@ -7,13 +9,13 @@ import { useState } from "react";
     Normally you'd have to generate a new target every day and store that in a database
     but this makes it so everyone has the same random target every day,
     while needing no server :>
-*/ 
-export function generateUniqueNumber(n) {
-    const now = moment().tz("America/New_York");
-    const seed = now.format("DD-MM-YYYY");
-    const rng = seedrandom(seed);
-    const uniqueNumber = Math.floor(rng() * (Number(n) + 1));
-    return uniqueNumber;
+*/
+export function generateUniqueNumber(n, offset = 0) {
+  const now = moment().tz("America/New_York");
+  const seed = now.format("DD-MM-YYYY");
+  const rng = seedrandom(seed + offset);
+  const uniqueNumber = Math.floor(rng() * (Number(n) + 1));
+  return uniqueNumber;
 }
 
 /*
@@ -55,20 +57,19 @@ export default function useLocalStorage(key, initialValue) {
 }
 
 // Function for converting 0-15 to a character
-function decimalToHex(n) {
-    if (n < 0 || n > 15) {
-        throw new Error('Input must be a number between 0 and 15.');
-    }
+export function decimalToHex(n) {
+  if (n < 0 || n > 15) {
+    throw new Error("Input must be a number between 0 and 15.");
+  }
 
-    return n.toString(16);
+  return n.toString(16);
 }
 
 // Function for converting a character to 0-15
-function hexToDecimal(hexChar) {
-    if (typeof hexChar !== 'string' || !hexChar.match(/^[0-9a-fA-F]$/)) {
-        throw new Error('Input must be a char between 0 and f.');
-    }
+export function hexToDecimal(hexChar) {
+  if (typeof hexChar !== "string" || !hexChar.match(/^[0-9a-fA-F]$/)) {
+    throw new Error("Input must be a char between 0 and f.");
+  }
 
-    return parseInt(hexChar, 16);
+  return parseInt(hexChar, 16);
 }
-

@@ -3,12 +3,12 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Button, Divider } from "antd";
 import { decimalToHex, hexToDecimal, generateUniqueNumber } from "./utils.js";
+import Guess from "./components/Guess.js";
 
 export default function Home() {
   const [userInput, setUserInput] = useState("#");
   const [randColor, setRandColor] = useState("bisque");
   const [statusText, setStatusText] = useState("");
-  const [guessText, setGuessText] = useState("");
   const [guesses, setGuesses] = useState([]);
   const [counter, setCounter] = useState(4);
   const [gameOver, setGameOver] = useState(false);
@@ -26,10 +26,16 @@ export default function Home() {
     setIsModalVisible(false);
   };
 
+  const handleKeypress = (event) => {
+    if (event.key === "Enter") {
+      enterClick();
+    }
+  };
+
   useEffect(() => {
-    const r = Math.floor(Math.random() * 256);
-    const g = Math.floor(Math.random() * 256);
-    const b = Math.floor(Math.random() * 256);
+    const r = generateUniqueNumber(256, 0);
+    const g = generateUniqueNumber(256, 1);
+    const b = generateUniqueNumber(256, 2);
 
     const componentToHex = (c) => {
       const hex = c.toString(16);
@@ -55,105 +61,49 @@ export default function Home() {
   };
 
   const enterClick = () => {
-    const hexCodePattern = /^[0-9A-Fa-f]+$/;
+    if (counter < 0) {
+      return;
+    }
 
-    setUserInput("#");
+    const hexCodePattern = /^[0-9A-Fa-f]+$/;
 
     if (userInput.length != 7) {
       setStatusText("ERROR: HEX CODE MUST BE EXACTLY 6 DIGITS.");
       return;
-    } else if (!hexCodePattern.test(userInput.substring(1))) {
+    }
+
+    if (!hexCodePattern.test(userInput.substring(1))) {
       setStatusText("INVALID CHARACTER. PLEASE ONLY USE 0-9, A-F");
-    } else if (userInput in guesses) {
+      return;
+    }
+
+    if (guesses.includes(userInput)) {
       setStatusText("ALREADY GUESSED, please try a different hex code.");
+      return;
+    }
+
+    if (userInput === randColor) {
+      setStatusText("You guessed it!");
+      setGameOver(true);
     } else {
-      setCounter(counter - 1);
-      if (counter >= 0 && userInput === randColor) {
-        setStatusText("You guessed it!");
-        const newGuesses = [...guesses];
-        newGuesses.unshift(userInput);
-        setGuesses(newGuesses);
-        setGameOver(true);
-        return;
-      } else if (counter == 1 && userInput !== randColor) {
-        setStatusText(`Not quite! ${counter} guess left.`);
-        const newGuesses = [...guesses];
-        newGuesses.unshift(userInput);
-        setGuesses(newGuesses);
-      } else if (counter > 0 && userInput !== randColor) {
-        setStatusText(`Not quite! ${counter} guesses left.`);
-        const newGuesses = [...guesses];
-        newGuesses.unshift(userInput);
-        setGuesses(newGuesses);
-      } else if (counter <= 0 && userInput !== randColor) {
-        const newGuesses = [...guesses];
-        newGuesses.unshift(userInput);
-        setGuesses(newGuesses);
+      if (counter === 0) {
         setStatusText(`Out of guesses. Todays Hexcodle was ${randColor}.`);
         setGameOver(true);
-        return;
-      }
-    }
-  };
-
-  const renderArrows = (guess) => {
-    const hexMapping = {
-      0: 0,
-      1: 1,
-      2: 2,
-      3: 3,
-      4: 4,
-      5: 5,
-      6: 6,
-      7: 7,
-      8: 8,
-      9: 9,
-      A: 10,
-      B: 11,
-      C: 12,
-      D: 13,
-      E: 14,
-      F: 15,
-    };
-
-    if (guess.length !== 7) {
-      return null;
-    }
-    const arrows = [];
-    for (let i = 1; i < 7; i++) {
-      const currentDigit = hexMapping[guess[i]];
-      const targetDigit = hexMapping[randColor[i]];
-
-      if (currentDigit > targetDigit) {
-        arrows.push("⬇️");
-      } else if (currentDigit < targetDigit) {
-        arrows.push("⬆️");
       } else {
-        arrows.push("✅");
+        setStatusText(`Not quite! ${counter} guess${counter == 1 ? "" : "es"} left.`);
       }
     }
-    return arrows.map((arrow, index) => <span key={index}>{arrow}</span>);
+
+    const newGuesses = [...guesses];
+    newGuesses.unshift(userInput);
+    setGuesses(newGuesses);
+    setCounter(counter - 1);
+    setUserInput("#");
   };
 
   return (
-    <div id="everything">
-      <h1 id="title">Hexcodle</h1>
-
-      <div id="instructions">
-        <p>
-          You will have 5 tries to correctly guess the hex code of the colour
-          displayed on screen.<br></br>
-          After each guess, you will see if your guess was too low, too high, or
-          spot on! <br></br>
-          Use these as guides to decipher how close your guess is.
-          {randColor}
-        </p>
-      </div>
-
-      <div id="infoModal">
-        <Button type="primary" size="small" onClick={showModal}>
-          WTF IS HEX?
-        </Button>
+    <div id="everything" style={{ backgroundColor: guesses[0] }}>
+      <div className="container frosted-glass">
         <Modal
           title="How the HEX do hex codes work?"
           visible={isModalVisible}
@@ -192,46 +142,54 @@ export default function Home() {
             </ul>
           </p>
         </Modal>
-      </div>
+        <h1 id="title">Hexcodle</h1>
 
-      <div class="square" style={{ backgroundColor: randColor }}></div>
+        <div id="instructions">
+          <p>
+            You will have 5 tries to correctly guess the hex code of the colour
+            displayed on screen.<br></br>
+            After each guess, you will see if your guess was too low, too high,
+            or spot on! <br></br>
+            Use these as guides to decipher how close your guess is.
+          </p>
+        </div>
 
-      <div id="inputAndButton">
-        <input
-          type="text"
-          id="userinput"
-          value={userInput}
-          onChange={handleChange}
-        />
+        <div id="infoModal">
+          <Button type="primary" size="small" onClick={showModal}>
+            WTF IS HEX?
+          </Button>
+        </div>
 
-        <Button
-          type="primary"
-          size="small"
-          id="enterButton"
-          onClick={() => {
-            enterClick();
-          }}
-          on
-          disabled={gameOver}
-        >
-          ENTER
-        </Button>
-      </div>
+        <div className="square" style={{ backgroundColor: randColor }}></div>
 
-      <p>{statusText}</p>
-      <h id="guessHeading">Guesses</h>
-      <div id="guessDisplay">
-        {guessText}
-        <ul id="guesses">
-          <div id="guessContainer">
-            {guesses.map((guess, index) => (
-              <>
-                <li key={index}>{guess} </li>
-                {renderArrows(guess)}
-              </>
-            ))}
-          </div>
-        </ul>
+        <div id="inputAndButton">
+          <input
+            type="text"
+            id="userinput"
+            maxLength="7"
+            onKeyPress={handleKeypress}
+            value={userInput}
+            onChange={handleChange}
+          />
+
+          <button
+            id="enterButton"
+            onClick={() => {
+              enterClick();
+            }}
+            disabled={gameOver}
+          >
+            ➜
+          </button>
+        </div>
+
+        <p>{statusText}</p>
+
+        <h id="guessHeading">Guesses</h>
+
+        {guesses.map((guess, index) => (
+          <Guess key={index} guess={guess} target={randColor} />
+        ))}
       </div>
     </div>
   );
