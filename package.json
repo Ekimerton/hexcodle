@@ -9,6 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@mantine/core": "^6.0.19",
+    "@mantine/hooks": "^6.0.19",
+    "@mantine/ssr": "^6.0.19",
     "antd": "^5.8.3",
     "autoprefixer": "10.4.14",
     "eslint": "8.44.0",
@@ -21,5 +25,8 @@
     "react-dom": "18.2.0",
     "seedrandom": "^3.0.5",
     "tailwindcss": "3.3.2"
+  },
+  "devDependencies": {
+    "daisyui": "^3.5.1"
   }
 }

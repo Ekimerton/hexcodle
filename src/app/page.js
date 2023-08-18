@@ -8,7 +8,7 @@ import Guess from "./components/Guess.js";
 export default function Home() {
   const [userInput, setUserInput] = useState("#");
   const [randColor, setRandColor] = useState("bisque");
-  const [statusText, setStatusText] = useState("");
+  const [statusText, setStatusText] = useState(" ");
   const [guesses, setGuesses] = useState([]);
   const [counter, setCounter] = useState(4);
   const [gameOver, setGameOver] = useState(false);
@@ -68,17 +68,19 @@ export default function Home() {
     const hexCodePattern = /^[0-9A-Fa-f]+$/;
 
     if (userInput.length != 7) {
-      setStatusText("ERROR: HEX CODE MUST BE EXACTLY 6 DIGITS.");
+      setStatusText("Error: Hex code must be exactly 6 digits.");
       return;
     }
 
     if (!hexCodePattern.test(userInput.substring(1))) {
-      setStatusText("INVALID CHARACTER. PLEASE ONLY USE 0-9, A-F");
+      setStatusText("nvalid character. Hex codes may only contain 0-9, A-F");
       return;
     }
 
     if (guesses.includes(userInput)) {
-      setStatusText("ALREADY GUESSED, please try a different hex code.");
+      setStatusText(
+        "Already guessed this one! Please enter a different hex code."
+      );
       return;
     }
 
@@ -104,99 +106,122 @@ export default function Home() {
   };
 
   return (
-    <div id="everything" style={{ backgroundColor: guesses[0] }}>
-      <div className="container frosted-glass">
-        <Modal
-          title="How the HEX do hex codes work?"
-          visible={isModalVisible}
-          onOk={handleOk}
-          onCancel={handleCancel}
-        >
-          <p>
-            First, we will break down each of the 6 hex digits. A hexcode can be
-            represented as RRGGBB where R represents red, G represents green and
-            B represents blue. The digits/letters in these locations denote the
-            intensity of that colour; 0 being the lowest, and F being the
-            highest.
-          </p>
-          <p>
-            We use 0-9 are the first 10 values and A-F can be represented as
-            digits 11-16, where 0 is the lowest intensity, and 16/F is the
-            hightest intensity.
-          </p>
-          <p>
-            Some common hex codes are as follows:
-            <ul id="hexList">
-              <li>#FFFFFF: White (full intensity for all RGB components)</li>
-              <li>#000000: Black (no intensity for all RGB components)</li>
-              <li>
-                #FF0000: Red (full intensity for red, no intensity for green and
-                blue)
-              </li>
-              <li>
-                #00FF00: Green (full intensity for green, no intensity for red
-                and blue)
-              </li>
-              <li>
-                #0000FF: Blue (full intensity for blue, no intensity for red and
-                green)
-              </li>
-            </ul>
-          </p>
-        </Modal>
-        <h1 id="title">Hexcodle</h1>
+    <div className="everything" /*style={{ backgroundColor: guesses[0] }}*/>
+      <Modal
+        title="How the HEX do hex codes work?"
+        open={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        <p>
+          First, we will break down each of the 6 hex digits. A hex code can be
+          represented as RRGGBB where R represents red, G represents green and B
+          represents blue values. The digits/letters in these locations denote
+          the intensity of that colour; 0 being the lowest, and F being the
+          highest.
+        </p>
+        <p>
+          We use 0-9 are the first 10 values and A-F can be represented as
+          digits 11-16, where 0 is the lowest intensity, and 16, or F, is the
+          hightest intensity.
+        </p>
+        <p>
+          Some common hex codes are as follows:
+          <ul id="hexList">
+            <li style={{ color: "#CBCBC9" }}>
+              #FFFFFF: White (full intensity for all RGB components)
+            </li>
+            <li>#000000: Black (no intensity for all RGB components)</li>
+            <li style={{ color: "red" }}>
+              #FF0000: Red (full intensity for red, no intensity for green and
+              blue)
+            </li>
+            <li style={{ color: "green" }}>
+              #00FF00: Green (full intensity for green, no intensity for red and
+              blue)
+            </li>
+            <li style={{ color: "blue" }}>
+              #0000FF: Blue (full intensity for blue, no intensity for red and
+              green)
+            </li>
+          </ul>
+        </p>
+      </Modal>
+      <div>
+        <section className="frosted-glass">
+          <h1 className="title">Hexcodle</h1>
 
-        <div id="instructions">
           <p>
             You will have 5 tries to correctly guess the hex code of the colour
-            displayed on screen.<br></br>
-            After each guess, you will see if your guess was too low, too high,
-            or spot on! <br></br>
-            Use these as guides to decipher how close your guess is.
+            displayed on screen. After each guess, you will see if your guess
+            was too low, too high, or spot on! Use these as guides to decipher
+            how close your guess is.
           </p>
-        </div>
 
-        <div id="infoModal">
-          <Button type="primary" size="small" onClick={showModal}>
+          <button className="modal-button" onClick={showModal}>
             WTF IS HEX?
-          </Button>
-        </div>
-
-        <div className="square" style={{ backgroundColor: randColor }}></div>
-
-        <div id="inputAndButton">
-          <input
-            type="text"
-            id="userinput"
-            maxLength="7"
-            onKeyPress={handleKeypress}
-            value={userInput}
-            onChange={handleChange}
-          />
-
-          <button
-            id="enterButton"
-            onClick={() => {
-              enterClick();
-            }}
-            disabled={gameOver}
-          >
-            ➜
           </button>
-        </div>
+        </section>
+        <section className="frosted-glass">
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "start",
+              alignItems: "end",
+              marginBottom: 8,
+            }}
+          >
+            <div style={{ marginRight: 32 }}>
+              <h3>Target</h3>
+              <div
+                className="square"
+                style={{ backgroundColor: randColor }}
+              ></div>
+            </div>
+            <div>
+              <h3>Your Guess</h3>
+              <div
+                className="square"
+                style={{ backgroundColor: guesses[0] }}
+              ></div>
+            </div>
+          </div>
 
-        <p>{statusText}</p>
+          <div id="input-and-button">
+            <input
+              type="text"
+              className="input input-bordered input-sm w-full max-w-xs"
+              maxLength="7"
+              onKeyPress={handleKeypress}
+              value={userInput}
+              onChange={handleChange}
+            />
 
-        <h id="guessHeading">Guesses</h>
+            <button
+              className="square-button"
+              onClick={() => {
+                enterClick();
+              }}
+              disabled={gameOver}
+            >
+              ➜
+            </button>
+          </div>
+          <p className="guess-text">{statusText}</p>
+        </section>
 
-        {guesses.map((guess, index) => (
-          <Guess
-            key={index}
-            guess={guess}
-            target={randColor}
-            hashtag={index === 0}
-          />
-        ))}
+        <section className="frosted-glass guess-section">
+          <h2 id="guess-heading">Guesses</h2>
+
+          {guesses.map((guess, index) => (
+            <Guess
+              key={index}
+              guess={guess}
+              target={randColor}
+              hashtag={index === 0}
+            />
+          ))}
+        </section>
       </div>
     </div>
   );
