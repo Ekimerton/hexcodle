@@ -89,6 +89,7 @@ body {
   /* This helps create the illusion of movement */
   font-family: Arial, Helvetica, sans-serif;
   margin: 0px;
+  overflow-x: hidden;
 }
 
 @keyframes rainbowAnimation {
@@ -117,12 +118,10 @@ section {
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
   width: 100%;
   max-width: 600px;
-  margin-top: 16px;
-  margin-bottom: 16px;
-  padding: 8px;
-  border-radius: 16px;
+  padding: 0px 8px;
 }
 
 .modal-button {
@@ -146,7 +145,7 @@ section {
 input {
   width: 150px;
   height: 30px;
-  background-color: #ffffff;
+  background-color: #f3f3f3;
   color: #333333;
   border: 1px solid #bdc3c7;
   border-radius: 5px;
@@ -168,19 +167,12 @@ input:focus {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(316deg, #4a68a8, #4ba0d0);
-  background-size: 600% 600%;
-  animation: rainbowAnimation 28s ease infinite;
 }
 
 .frosted-glass {
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
-  padding-left: 30px;
-  padding-right: 30px;
-  text-align: center;
-  align-items: center;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
 }
 
 .container {
@@ -204,20 +196,17 @@ input:focus {
 }
 
 .square {
-  height: 200px;
-  width: 200px;
+  width: 40vw;
+  height: 40vw;
+  max-height: 200px;
+  max-width: 200px;
   background-color: #333333;
   margin-bottom: 6px;
 }
 
-@media screen and (max-width: 768px) {
-  .square {
-    width: 150px;
-    height: 150px
-  }
-}
-
 .square-button {
+  padding: 0;
+  margin: 0;
   width: 32px;
   height: 32px;
   background-color: #3498db;
@@ -237,6 +226,7 @@ input:focus {
 
 .guess-section {
   min-height: 400px;
+  padding: 0;
 }
 
 /* ID styles */

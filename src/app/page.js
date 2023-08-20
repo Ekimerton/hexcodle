@@ -73,7 +73,7 @@ export default function Home() {
     }
 
     if (!hexCodePattern.test(userInput.substring(1))) {
-      setStatusText("nvalid character. Hex codes may only contain 0-9, A-F");
+      setStatusText("Invalid character. Hex codes may only contain 0-9, A-F");
       return;
     }
 
@@ -148,7 +148,7 @@ export default function Home() {
         </p>
       </Modal>
       <div>
-        <section className="frosted-glass">
+        <section style={{marginTop: 16}}>
           <h1 className="title">Hexcodle</h1>
 
           <p>
@@ -162,16 +162,17 @@ export default function Home() {
             WTF IS HEX?
           </button>
         </section>
-        <section className="frosted-glass">
+        <section>
           <div
             style={{
               display: "flex",
-              justifyContent: "start",
+              width: "100%",
+              justifyContent: "center",
               alignItems: "end",
               marginBottom: 8,
             }}
           >
-            <div style={{ marginRight: 32 }}>
+            <div style={{marginRight: 16}}>
               <h3>Target</h3>
               <div
                 className="square"
@@ -210,7 +211,7 @@ export default function Home() {
           <p className="guess-text">{statusText}</p>
         </section>
 
-        <section className="frosted-glass guess-section">
+        <section className="guess-section">
           <h2 id="guess-heading">Guesses</h2>
 
           {guesses.map((guess, index) => (

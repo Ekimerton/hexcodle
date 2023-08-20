@@ -1,26 +1,21 @@
 .guess-container {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: space-around;
     width: 100%;
-    max-width: 600px;
-    margin-left: 16px;
-    margin-right: 16px;
+    padding: 8px 16px;
 }
 
 .guess-character {
     font-family: 'Roboto Mono', monospace;
     text-align: center;
     font-weight: bold;
-    flex: 1;
     border-radius: 12px;
-    border-width: 4px;
-    border-color: black;
-    border-style: solid;
-    margin: 5px;
-    padding: 8px;
-    background-color: #ffffff;
-    aspect-ratio: 2/1;
+    margin: 0px 4px;
+    padding: 4px;
+    width: max(44px, 7vw);
+    aspect-ratio: 1/1;
+    background-color: #f3f3f3;
 }
 
 .guess-text {
@@ -28,7 +23,7 @@
 }
 
 .guess-p {
-    font-size: clamp(1rem, 2.5vw, 1.5rem);
+    font-size: max(2vw, 0.8rem);
     margin: 0px;
     padding: 0px;
 }

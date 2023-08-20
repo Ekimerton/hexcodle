@@ -17,12 +17,11 @@ export default function Guess(props) {
 
   return (
     <>
-      <div className="guess-container">
+      <div className="guess-container" style={{ backgroundColor: guess }}>
         {[...guess.substring(1)].map((character, index) => (
           <div
             key={index}
-            className="guess-character"
-            style={{ borderColor: guess }}
+            className="guess-character frosted-glass"
           >
             <p className="guess-p">{character}</p>
             <p className="guess-p">
