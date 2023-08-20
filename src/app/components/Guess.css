@@ -25,6 +25,7 @@
 
 .guess-text {
     margin: 8px;
+    font-weight: bold;
 }
 
 .guess-p {

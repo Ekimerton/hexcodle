@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { Modal, Button, Divider } from "antd";
 import { decimalToHex, hexToDecimal, generateUniqueNumber } from "./utils.js";
 import Guess from "./components/Guess.js";
+import Confetti from "./components/Confetti.js";
 
 export default function Home() {
   const [userInput, setUserInput] = useState("#");
@@ -73,7 +74,7 @@ export default function Home() {
     }
 
     if (!hexCodePattern.test(userInput.substring(1))) {
-      setStatusText("nvalid character. Hex codes may only contain 0-9, A-F");
+      setStatusText("Invalid character. Hex codes may only contain 0-9, A-F");
       return;
     }
 
@@ -106,12 +107,16 @@ export default function Home() {
   };
 
   return (
+    <>
+    {statusText === "You guessed it!" && <Confetti/>}
     <div className="everything" /*style={{ backgroundColor: guesses[0] }}*/>
+
       <Modal
         title="How the HEX do hex codes work?"
         open={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
+        cancelButtonProps={{ style: { display: 'none' } }}
       >
         <p>
           First, we will break down each of the 6 hex digits. A hex code can be
@@ -145,6 +150,9 @@ export default function Home() {
               green)
             </li>
           </ul>
+        </p>
+        <p>
+          Still a little confused? Try the <a href="https://htmlcolorcodes.com/">hex colour codes</a> website.
         </p>
       </Modal>
       <div>
@@ -195,6 +203,7 @@ export default function Home() {
               onKeyPress={handleKeypress}
               value={userInput}
               onChange={handleChange}
+              disabled={gameOver}
             />
 
             <button
@@ -224,5 +233,6 @@ export default function Home() {
         </section>
       </div>
     </div>
+    </>
   );
 }
