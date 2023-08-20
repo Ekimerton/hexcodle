@@ -17,7 +17,9 @@ export default function Guess(props) {
 
   return (
     <>
-      <div className="guess-container" style={{ backgroundColor: guess }}>
+      <div style={{ backgroundColor: guess, width: "100%", borderRadius: 16, marginBottom: 8 }}>
+      <h3 style={{backgroundColor: "#f3f3f3", borderTopLeftRadius: 16, borderTopRightRadius: 16}}>Guess 1/5</h3>
+        <div className="guess-container">
         {[...guess.substring(1)].map((character, index) => (
           <div
             key={index}
@@ -29,6 +31,7 @@ export default function Guess(props) {
             </p>
           </div>
         ))}
+        </div>
       </div>
     </>
   );

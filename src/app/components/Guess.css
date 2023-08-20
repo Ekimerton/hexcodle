@@ -1,7 +1,7 @@
 .guess-container {
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: center;
     width: 100%;
     padding: 8px 16px;
 }
@@ -13,8 +13,7 @@
     border-radius: 12px;
     margin: 0px 4px;
     padding: 4px;
-    width: max(44px, 7vw);
-    aspect-ratio: 1/1;
+    width: 56px;
     background-color: #f3f3f3;
 }
 
@@ -23,7 +22,7 @@
 }
 
 .guess-p {
-    font-size: max(2vw, 0.8rem);
+    font-size: 1rem;
     margin: 0px;
     padding: 0px;
 }
