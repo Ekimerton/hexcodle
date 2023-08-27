@@ -90,7 +90,7 @@ export default function Home() {
       setGameOver(true);
     } else {
       if (counter === 0) {
-        setStatusText(`Out of guesses. Todays Hexcodle was ${randColor}.`);
+        setStatusText(`Out of guesses.`);
         setGameOver(true);
       } else {
         setStatusText(
@@ -127,7 +127,7 @@ export default function Home() {
 
         <Modal
           title="Better luck next time"
-          open={counter === -1}
+          open={statusText === "Out of guesses."}
           onOk={handleOk}
           onCancel={handleCancel}
           cancelButtonProps={{ style: { display: "none" } }}
