@@ -117,7 +117,7 @@ export default function Home() {
           cancelButtonProps={{ style: { display: "none" } }}
         >
           <p>
-            You solved today's Hexcodle in {4 - counter} guess
+            You solved the Hexcodle in {4 - counter} guess
             {4 - counter == 1 ? "" : "es"}.<br></br>
             <br></br>
             Come back tomorrow for a new colour!
@@ -133,7 +133,7 @@ export default function Home() {
           cancelButtonProps={{ style: { display: "none" } }}
         >
           <p>
-            Bummer! Today's Hexcodle was {randColor}.<br></br>
+            Bummer! The Hexcodle for today was {randColor}.<br></br>
             Come back tomorrow for a new colour!
           </p>
         </Modal>
