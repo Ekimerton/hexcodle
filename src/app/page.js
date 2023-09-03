@@ -116,7 +116,7 @@ export default function Home() {
       setGameOver(true);
     } else {
       if (counter === 0) {
-        setStatusText(`Out of guesses. Todays Hexcodle was ${randColor}.`);
+        setStatusText(`Out of guesses.`);
         setGameOver(true);
       } else {
         setStatusText(
