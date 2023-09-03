@@ -14,17 +14,31 @@ export default function Home() {
   const [counter, setCounter] = useState(4);
   const [gameOver, setGameOver] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isWinModalVisible, setIsWinModalVisible] = useState(false);
+  const [isLossModalVisible, setIsLossModalVisible] = useState(false);
 
   const showModal = () => {
     setIsModalVisible(true);
   };
 
+  const showWinModal = () => {
+    setIsWinModalVisible(true);
+  };
+
+  const showLossModal = () => {
+    setIsLossModalVisible(true);
+  };
+
   const handleOk = () => {
     setIsModalVisible(false);
+    setIsWinModalVisible(false);
+    setIsLossModalVisible(false);
   };
 
   const handleCancel = () => {
     setIsModalVisible(false);
+    setIsWinModalVisible(false);
+    setIsLossModalVisible(false);
   };
 
   const handleKeypress = (event) => {
@@ -49,6 +63,18 @@ export default function Home() {
       )}`.toUpperCase()
     );
   }, []);
+
+  useEffect(() => {
+    if (counter === -1) {
+      showLossModal();
+    }
+  }, [counter]);
+
+  useEffect(() => {
+    if (statusText === "You guessed it!") {
+      showWinModal();
+    }
+  }, [counter]);
 
   const handleChange = (event) => {
     const text = event.target.value;
@@ -106,12 +132,13 @@ export default function Home() {
     setUserInput("#");
   };
 
+
   return (
     <>
       <div className="everything" /*style={{ backgroundColor: guesses[0] }}*/>
         <Modal
           title="Congrats!"
-          open={statusText === "You guessed it!"}
+          open={isWinModalVisible}
           onOk={handleOk}
           onCancel={handleCancel}
           cancelButtonProps={{ style: { display: "none" } }}
@@ -127,7 +154,7 @@ export default function Home() {
 
         <Modal
           title="Better luck next time"
-          open={counter === -1}
+          open={isLossModalVisible}
           onOk={handleOk}
           onCancel={handleCancel}
           cancelButtonProps={{ style: { display: "none" } }}
