@@ -65,14 +65,14 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    if (counter === -1) {
-      showLossModal();
+    if (statusText === "You guessed it!") {
+      showWinModal();
     }
   }, [counter]);
 
   useEffect(() => {
-    if (statusText === "You guessed it!") {
-      showWinModal();
+    if (counter === -1 && statusText !== "You guessed it!") {
+      showLossModal();
     }
   }, [counter]);
 
@@ -131,7 +131,6 @@ export default function Home() {
     setCounter(counter - 1);
     setUserInput("#");
   };
-
 
   return (
     <>
