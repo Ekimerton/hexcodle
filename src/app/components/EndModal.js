@@ -12,9 +12,15 @@ export default function EndModal({
   win = false,
 }) {
   const getSharableString = () => {
-    let shareableString = `I got today's hexcodle in ${guesses.length} ${
-      guesses.length > 1 ? "guesses" : "guess"
-    }!\nhttps://hexcodle.vercel.app \n\n`;
+    let shareableString = "";
+    if (win) {
+      shareableString = `I got today's hexcodle in ${guesses.length} ${
+        guesses.length > 1 ? "guesses" : "guess"
+      }!\nhttps://hexcodle.vercel.app \n\n`;
+    } else {
+      shareableString = `I did not solve today's hexcodle.
+      \nhttps://hexcodle.vercel.app \n\n`;
+    }
 
     const reversed = [...guesses].reverse();
 
@@ -49,9 +55,9 @@ export default function EndModal({
       }}
       cancelButtonProps={{ style: { display: "none" } }}
     >
-      <Confetti />
       {win ? (
         <>
+          <Confetti />
           <p>
             You solved the Hexcodle in {4 - counter} guess
             {4 - counter == 1 ? "" : "es"}.<br></br>
