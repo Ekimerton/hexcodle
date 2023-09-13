@@ -4,7 +4,8 @@ import React, { useState, useEffect } from "react";
 import { Modal, Button, Divider } from "antd";
 import { decimalToHex, hexToDecimal, generateUniqueNumber } from "./utils.js";
 import Guess from "./components/Guess.js";
-import Confetti from "./components/Confetti.js";
+import EndModal from "./components/EndModal.js";
+import HexInfoModal from "./components/HexInfoModal.js";
 
 export default function Home() {
   const [userInput, setUserInput] = useState("#");
@@ -14,31 +15,10 @@ export default function Home() {
   const [counter, setCounter] = useState(4);
   const [gameOver, setGameOver] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [isWinModalVisible, setIsWinModalVisible] = useState(false);
-  const [isLossModalVisible, setIsLossModalVisible] = useState(false);
+  const [endModalVisible, setEndModalVisible] = useState(false);
 
   const showModal = () => {
     setIsModalVisible(true);
-  };
-
-  const showWinModal = () => {
-    setIsWinModalVisible(true);
-  };
-
-  const showLossModal = () => {
-    setIsLossModalVisible(true);
-  };
-
-  const handleOk = () => {
-    setIsModalVisible(false);
-    setIsWinModalVisible(false);
-    setIsLossModalVisible(false);
-  };
-
-  const handleCancel = () => {
-    setIsModalVisible(false);
-    setIsWinModalVisible(false);
-    setIsLossModalVisible(false);
   };
 
   const handleKeypress = (event) => {
@@ -65,16 +45,10 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    if (statusText === "You guessed it!") {
-      showWinModal();
+    if (gameOver) {
+      setEndModalVisible(true);
     }
-  }, [counter]);
-
-  useEffect(() => {
-    if (counter === -1 && statusText !== "You guessed it!") {
-      showLossModal();
-    }
-  }, [counter]);
+  }, [gameOver]);
 
   const handleChange = (event) => {
     const text = event.target.value;
@@ -135,80 +109,17 @@ export default function Home() {
   return (
     <>
       <div className="everything" /*style={{ backgroundColor: guesses[0] }}*/>
-        <Modal
-          title="Congrats!"
-          open={isWinModalVisible}
-          onOk={handleOk}
-          onCancel={handleCancel}
-          cancelButtonProps={{ style: { display: "none" } }}
-        >
-          <p>
-            You solved the Hexcodle in {4 - counter} guess
-            {4 - counter == 1 ? "" : "es"}.<br></br>
-            <br></br>
-            Come back tomorrow for a new colour!
-          </p>
-          <Confetti />
-        </Modal>
+        <EndModal
+          open={endModalVisible}
+          setOpen={setEndModalVisible}
+          color={randColor}
+          counter={counter}
+          guesses={guesses}
+          win={statusText === "You guessed it!"}
+        />
 
-        <Modal
-          title="Better luck next time"
-          open={isLossModalVisible}
-          onOk={handleOk}
-          onCancel={handleCancel}
-          cancelButtonProps={{ style: { display: "none" } }}
-        >
-          <p>
-            Bummer! The Hexcodle for today was {randColor}.<br></br>
-            Come back tomorrow for a new colour!
-          </p>
-        </Modal>
+        <HexInfoModal isOpen={isModalVisible} setIsOpen={setIsModalVisible} />
 
-        <Modal
-          title="How the HEX do hex codes work?"
-          open={isModalVisible}
-          onOk={handleOk}
-          onCancel={handleCancel}
-          cancelButtonProps={{ style: { display: "none" } }}
-        >
-          <p>
-            First, we will break down each of the 6 hex digits. A hex code can
-            be represented as RRGGBB where R represents red, G represents green
-            and B represents blue values. The digits/letters in these locations
-            denote the intensity of that colour; 0 being the lowest, and F being
-            the highest.
-          </p>
-          <p>
-            We use 0-9 are the first 10 values and A-F can be represented as
-            digits 11-16, where 0 is the lowest intensity, and 16, or F, is the
-            hightest intensity.
-          </p>
-          <p>
-            Some common hex codes are as follows:
-            <ul id="hexList">
-              <li style={{ color: "#CBCBC9" }}>
-                #FFFFFF: White (full intensity for all RGB components)
-              </li>
-              <li>#000000: Black (no intensity for all RGB components)</li>
-              <li style={{ color: "red" }}>
-                #FF0000: Red (full intensity for red, no intensity for green and
-                blue)
-              </li>
-              <li style={{ color: "green" }}>
-                #00FF00: Green (full intensity for green, no intensity for red
-                and blue)
-              </li>
-              <li style={{ color: "blue" }}>
-                #0000FF: Blue (full intensity for blue, no intensity for red and
-                green)
-              </li>
-            </ul>
-          </p>
-          <p>
-            Still a little confused? Try the{" "}
-            <a href="https://htmlcolorcodes.com/">hex colour codes</a> website.
-          </p>
-        </Modal>
         <div>
           <section className="frosted-glass">
             <h1 className="title">Hexcodle</h1>

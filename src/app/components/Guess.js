@@ -1,19 +1,9 @@
 import React from "react";
 import "./Guess.css";
-import { hexToDecimal } from "../utils";
+import { hexToDecimal, compareCharacters } from "../utils";
 
 export default function Guess(props) {
   const { guess, target, hashtag } = props;
-
-  const compareCharacters = (guess, target) => {
-    if (guess === target) {
-      return "✅";
-    } else if (hexToDecimal(guess) < hexToDecimal(target)) {
-      return "⬆️";
-    } else {
-      return "⬇️";
-    }
-  };
 
   return (
     <>

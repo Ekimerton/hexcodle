@@ -68,8 +68,19 @@ export function decimalToHex(n) {
 // Function for converting a character to 0-15
 export function hexToDecimal(hexChar) {
   if (typeof hexChar !== "string" || !hexChar.match(/^[0-9a-fA-F]$/)) {
+    console.log(hexChar);
     throw new Error("Input must be a char between 0 and f.");
   }
 
   return parseInt(hexChar, 16);
+}
+
+export function compareCharacters(guess, target) {
+  if (guess === target) {
+    return "✅";
+  } else if (hexToDecimal(guess) < hexToDecimal(target)) {
+    return "⬆️";
+  } else {
+    return "⬇️";
+  }
 }
